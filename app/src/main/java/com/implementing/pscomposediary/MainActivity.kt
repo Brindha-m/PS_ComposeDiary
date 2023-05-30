@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.implementing.pscomposediary.navigation.AppNavigation
-import com.implementing.pscomposediary.splash.OnBoarding
 import com.implementing.pscomposediary.ui.theme.PSDiaryTheme
 
 class MainActivity : ComponentActivity() {

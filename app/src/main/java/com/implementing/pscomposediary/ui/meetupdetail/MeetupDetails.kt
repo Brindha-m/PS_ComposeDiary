@@ -1,13 +1,19 @@
 package com.implementing.pscomposediary.ui.meetupdetail
 
+import android.content.res.Configuration
+import android.os.Build.VERSION.SDK_INT
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,15 +23,20 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,6 +57,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
@@ -58,6 +70,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import com.implementing.pscomposediary.R
 import com.implementing.pscomposediary.data.MeetUpProvider
 import com.implementing.pscomposediary.data.model.MeetUp
@@ -107,7 +123,7 @@ private fun SetMeetupDetails(
 }
 
 // Show up button, banner of the cat, custom app bar.
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 private fun MeetupHeader(
     meetup: MeetUp,
@@ -142,9 +158,20 @@ private fun MeetupHeader(
         ) {
             Column(modifier = Modifier.clickable(onClick = { })) {
 
+                val imageLoader = ImageLoader.Builder(LocalContext.current)
+                    .components {
+                        if (SDK_INT >= 28) {
+                            add(ImageDecoderDecoder.Factory())
+                        } else {
+                            add(GifDecoder.Factory())
+                        }
+                    }
+                    .build()
+
                 Image(
 //                painter = painterResource(R.drawable.tangled),
-                    bitmap = ImageBitmap.imageResource(meetup.meetupImage),
+                    painter = rememberAsyncImagePainter(meetup.meetupImage, imageLoader),
+//                    bitmap = ImageBitmap.imageResource(meetup.meetupImage),
                     contentDescription = "null", // decorative
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -194,8 +221,6 @@ private fun MeetupHeader(
                             )
                         }
                     }
-
-
                 }
             }
         }
@@ -227,15 +252,18 @@ private fun MeetupHeader(
             )
         }
     }
-    Column {
-        Text(
-            text = "Highlights ⚡",
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier
-                .padding(start = 15.dp, top = 20.dp)
-        )
+    Column (modifier = Modifier.padding(15.dp)){
+        Button(onClick = {},
+            colors = ButtonDefaults.buttonColors(Color(0xFFEE1C70)))
+        {
+            Icon(Icons.Filled.Favorite, contentDescription = "Localized description",
+                modifier = Modifier.size(ButtonDefaults.IconSize))
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text("Highlights",
+                style = MaterialTheme.typography.titleSmall
+            )
+        }
         Spacer(modifier = Modifier.heightIn(5.dp))
-
     }
 
     Row(modifier = Modifier.padding(18.dp)){
@@ -251,39 +279,43 @@ private fun MeetupHeader(
             )
             Spacer(modifier = Modifier.width(10.dp))
         }
-
     }
 
-    Column(modifier = Modifier.padding(15.dp)){
-        Row()
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    if (isPortrait) {
+        FlowRow(modifier = Modifier.padding(start = 15.dp))
         {
-            Text(
-                text = meetup.meetupTitle,
-                style = MaterialTheme.typography.displayMedium,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.width(11.dp))
+            meetup.meetupTags.take(4).forEach { tags ->
+                // * Elevated Button
+                ElevatedButton(onClick = {})
+                {
+                    Text(
+                        text = tags,
+                        style = MaterialTheme.typography.displayMedium,
 
-
-            Text(
-                text = meetup.meetupTitle,
-                style = MaterialTheme.typography.displayMedium,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.width(11.dp))
-
-
-            Text(
-                text = meetup.meetupTitle,
-                style = MaterialTheme.typography.displayMedium,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
+                    )
+                }
+                Spacer(modifier = Modifier.width(9.dp))
+            }
         }
     }
-
+    else{
+        Row(modifier = Modifier.padding(start = 15.dp, end = 5.dp))
+        {
+            meetup.meetupTags.take(4).forEach { tags ->
+                // * Elevated Button
+                ElevatedButton(onClick = {})
+                {
+                    Text(
+                        text = tags,
+                        style = MaterialTheme.typography.displayMedium,
+                    )
+                }
+                Spacer(modifier = Modifier.width(11.dp))
+            }
+        }
+    }
 }
 
 // Horizontal divider

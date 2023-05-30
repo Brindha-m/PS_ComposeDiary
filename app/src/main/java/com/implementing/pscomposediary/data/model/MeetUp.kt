@@ -12,7 +12,8 @@ data class MeetUp(
     val meetupDate: String,
     val meetupLocation: String,
     val meetupSpecial: String,
-    val meetupHighlight : List<Int>
+    val meetupHighlight : List<Int>,
+    val meetupTags: List<String>
 
 ) : Serializable
 
