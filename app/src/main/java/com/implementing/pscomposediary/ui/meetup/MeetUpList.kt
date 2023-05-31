@@ -1,7 +1,9 @@
 package com.implementing.pscomposediary.ui.meetup
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,6 +27,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -33,11 +36,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import com.implementing.pscomposediary.R
 import com.implementing.pscomposediary.data.MeetUpProvider
 import com.implementing.pscomposediary.data.model.MeetUp
 import com.implementing.pscomposediary.ui.theme.PSDiaryTheme
-
 
 // Start of the MeetupList UI
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,9 +51,11 @@ import com.implementing.pscomposediary.ui.theme.PSDiaryTheme
 fun MeetUpList(
     selectedMeetup: (Int) -> Unit
 ) {
+
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            .background(Color.DarkGray),
         topBar = {
             TopAppBar(
                 scrollBehavior = scrollBehavior,
@@ -131,8 +139,18 @@ private fun MeetUpRow(
             AnimatedVisibility(
                 visible = true
             ) {
+                val imageLoader = ImageLoader.Builder(LocalContext.current)
+                    .components {
+                        if (Build.VERSION.SDK_INT >= 28) {
+                            add(ImageDecoderDecoder.Factory())
+                        } else {
+                            add(GifDecoder.Factory())
+                        }
+                    }
+                    .build()
                 Image(
-                    painter = painterResource(id = meetup.meetupImage),
+//                    painter = painterResource(id = meetup.meetupImage),
+                    painter = rememberAsyncImagePainter(meetup.meetupImage, imageLoader),
                     contentDescription = stringResource(R.string.description),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -161,9 +179,9 @@ private fun MeetUpRow(
             AnimatedVisibility(arrowExpanded) {
                 Text(
                     text = meetup.meetupDescription,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.displayMedium,
                     modifier = Modifier.width(240.dp),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
         }

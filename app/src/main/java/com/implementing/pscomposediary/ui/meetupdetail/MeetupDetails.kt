@@ -8,8 +8,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -19,17 +17,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -55,16 +50,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -78,6 +70,7 @@ import com.implementing.pscomposediary.R
 import com.implementing.pscomposediary.data.MeetUpProvider
 import com.implementing.pscomposediary.data.model.MeetUp
 import com.implementing.pscomposediary.ui.theme.PSDiaryTheme
+
 
 // Start of the Detail screen for each cat.
 @Composable
@@ -194,20 +187,17 @@ private fun MeetupHeader(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Row()
+                    FlowRow(modifier = Modifier.padding(10.dp))
                     {
-                        Spacer(modifier = Modifier.height(5.dp))
 
                         Text(
-                            text = meetup.meetupDescription,
-                            //maxLines = 1,
-                            //overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.titleSmall,
+                            text = meetup.meetupSpecial,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.displayMedium,
                         )
+
                         var checked by rememberSaveable { mutableStateOf(false) }
-
-                        Spacer(modifier = Modifier.width(240.dp))
-
+                        Spacer(modifier = Modifier.width(250.dp))
                         IconToggleButton(checked = checked, onCheckedChange = { checked = it }) {
                             val tint by animateColorAsState(
                                 if (checked) Color(0xFFEC407A) else Color(0xFFB0BEC5),
@@ -217,7 +207,6 @@ private fun MeetupHeader(
                                 Icons.Filled.Favorite,
                                 contentDescription = "Localized description",
                                 tint = tint,
-
                             )
                         }
                     }
@@ -228,31 +217,32 @@ private fun MeetupHeader(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(25.dp, top= 5.dp, 25.dp, bottom = 10.dp),
         colors = CardDefaults.cardColors(
             containerColor =  Color(0xffF4EAEE),
         ),
     ) {
         Column (
-            modifier = Modifier.padding(15.dp)
+            modifier = Modifier.padding(13.dp).align(Alignment.CenterHorizontally),
         ) {
             Text(
                 buildAnnotatedString {
                     withStyle(
-                        style = SpanStyle( fontSize = 14.sp)
+                        style = SpanStyle( fontSize = 14.sp) ,
                     ) {
                         append(" 📌 ${meetup.meetupLocation} ")
                     }
+
                     withStyle(
                         style = SpanStyle(color = Color.Red, fontSize = 14.sp)
                     ) {
-                        append("       📅 ${meetup.meetupDate}")
+                        append("  📅 ${meetup.meetupDate}")
                     }
-                }
+                },
             )
         }
     }
-    Column (modifier = Modifier.padding(15.dp)){
+    Column (modifier = Modifier.padding(15.dp, end = 5.dp, top = 15.dp)){
         Button(onClick = {},
             colors = ButtonDefaults.buttonColors(Color(0xFFEE1C70)))
         {
@@ -263,7 +253,7 @@ private fun MeetupHeader(
                 style = MaterialTheme.typography.titleSmall
             )
         }
-        Spacer(modifier = Modifier.heightIn(5.dp))
+
     }
 
     Row(modifier = Modifier.padding(18.dp)){
@@ -286,7 +276,7 @@ private fun MeetupHeader(
     if (isPortrait) {
         FlowRow(modifier = Modifier.padding(start = 15.dp))
         {
-            meetup.meetupTags.take(4).forEach { tags ->
+            meetup.meetupTags.take(10).forEach { tags ->
                 // * Elevated Button
                 ElevatedButton(onClick = {})
                 {
@@ -303,7 +293,7 @@ private fun MeetupHeader(
     else{
         Row(modifier = Modifier.padding(start = 15.dp, end = 5.dp))
         {
-            meetup.meetupTags.take(4).forEach { tags ->
+            meetup.meetupTags.take(10).forEach { tags ->
                 // * Elevated Button
                 ElevatedButton(onClick = {})
                 {
