@@ -8,7 +8,7 @@ Utilizing the jetpack compose with lazycolumns &amp; lazyrows.
 
 ```
     
-    1. Jetpack Compose - Without XML creating UI With Kotlin
+    1. Jetpack Compose - Without XML creating UI With Kotlin, Made Dynamic Data providers.
     
     2. @Composable
     
@@ -16,7 +16,7 @@ Utilizing the jetpack compose with lazycolumns &amp; lazyrows.
     
     4. Instead of Recycler view - LazyRows and LazyColumns
     
-    5. AppNavigation - Sealed Class
+    5. AppNavigation - Sealed Class, Onclick Activities
     
     6. FlowRows(), FlowColumns(),
     
@@ -34,9 +34,12 @@ Utilizing the jetpack compose with lazycolumns &amp; lazyrows.
 
 ```
    1. Room Database
+   
    2. Efficient retrieval of images fast - firebase ? want to work even in offline
+   
    3. Login auths
    
 ```
 
-<img width="400" alt="Screenshot_20230603_122540-removebg-preview" src="https://github.com/Brindha-m/PS_ComposeDiary/assets/72887609/10fc0b8d-753a-43a9-8cc6-720196a319af">
+
+<img width="400" alt="Screenshot_20230603_122540-removebg-preview" src="https://github.com/Brindha-m/PS_ComposeDiary/assets/72887609/23f96272-5297-4d33-bd4e-8bc5a0624186">
