@@ -1,24 +1,41 @@
 package com.implementing.pscomposediary.confetticenter
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.repeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.implementing.pscomposediary.confetticenter.ConfettiAnimationVM
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.PI
@@ -34,10 +51,10 @@ fun ConfettiCenterView(viewModel: ConfettiAnimationVM = viewModel()) {
     val counter = remember { mutableStateOf(0) }
 
     Box(
-        modifier = Modifier.padding(start = 115.dp, top = 235.dp,13.dp,15.dp),
+        modifier = Modifier.padding(start = 150.dp, top = 255.dp,13.dp,15.dp),
 
     ) {
-        Button(
+        ElevatedButton(
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
             onClick = {
                 counter.value += 2
@@ -51,13 +68,13 @@ fun ConfettiCenterView(viewModel: ConfettiAnimationVM = viewModel()) {
         viewModel.closingAngle = 360.0
         viewModel.radius = 200.0f */
 
-        /* Emoji - Text
-        viewModel.confettiTypes = listOf(
-            ConfettiTypes.Text("❤️"),
-            ConfettiTypes.Text("\uD83D\uDC99"),
-            ConfettiTypes.Text("A")
-        )
-        viewModel.confettiSize = 20.0f */
+//        Emoji - Text
+//        viewModel.confettiTypes = listOf(
+//            ConfettiTypes.Text("🤍❤️"),
+//            ConfettiTypes.Text("🎉🧸"),
+//            ConfettiTypes.Text("🪴")
+//        )
+//        viewModel.confettiSize = 20.0f
 
         /* Image
         viewModel.confettiTypes = listOf(

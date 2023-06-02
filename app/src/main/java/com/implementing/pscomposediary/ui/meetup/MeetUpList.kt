@@ -3,7 +3,6 @@ package com.implementing.pscomposediary.ui.meetup
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,8 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,15 +19,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -45,15 +39,9 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import com.implementing.pscomposediary.R
 import com.implementing.pscomposediary.confetticenter.ConfettiCenterView
-import com.implementing.pscomposediary.confetticenter.ConfettiView
 import com.implementing.pscomposediary.data.MeetUpProvider
 import com.implementing.pscomposediary.data.model.MeetUp
 import com.implementing.pscomposediary.ui.theme.PSDiaryTheme
-import nl.dionsegijn.konfetti.compose.KonfettiView
-import nl.dionsegijn.konfetti.core.Party
-import nl.dionsegijn.konfetti.core.Position
-import nl.dionsegijn.konfetti.core.emitter.Emitter
-import java.util.concurrent.TimeUnit
 
 // Start of the MeetupList UI
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,19 +56,22 @@ fun MeetUpList(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
+                modifier = Modifier.padding(top=30.dp),
                 scrollBehavior = scrollBehavior,
-                navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            imageVector = Icons.Default.Home,
-                            contentDescription = "Home"
-                        )
-                    }
-                },
+//                navigationIcon = {
+//                    IconButton(onClick = {}) {
+//
+//                    }
+//                },
                 title = {
-                    Text(text = "PS Diary 🏡",
-                        color = Color.DarkGray)
+                    Text(text = "")
+                    Image(
+                        painter = painterResource(R.drawable.please),
+                        contentDescription = null,
+                    )
+
                 },
+
                 colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
             )
         },

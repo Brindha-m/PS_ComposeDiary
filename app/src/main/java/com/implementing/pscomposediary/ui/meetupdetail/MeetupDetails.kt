@@ -40,6 +40,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -108,6 +109,7 @@ private fun SetMeetupDetails(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+//                .background(Color.Black)
         ) {
             LazyColumn {
                 item { MeetupHeader(meetup, navigateUp) }
@@ -126,14 +128,16 @@ private fun MeetupHeader(
 
     TopAppBar(
         title = {
-            Text(text = "Back to Home 🏡")
+            Text(text = "Back to Home ")
         },
         Modifier.background(Color.Transparent),
         navigationIcon = {
             IconButton(onClick = navigateUp) {
                 Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "Go Back")
             }
-        }
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+
     )
 
     Box (modifier = Modifier.padding(10.dp)){

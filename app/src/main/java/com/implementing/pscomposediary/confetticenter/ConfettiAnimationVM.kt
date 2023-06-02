@@ -3,7 +3,10 @@ package com.implementing.pscomposediary.confetticenter
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.graphics.*
 import androidx.lifecycle.ViewModel
+import com.implementing.pscomposediary.helper.CustomShape.Shapes.Heart
 import com.implementing.pscomposediary.helper.CustomShape.Shapes.Parallelogram
+import com.implementing.pscomposediary.helper.CustomShape.Shapes.Pentagon
+import com.implementing.pscomposediary.helper.CustomShape.Shapes.Square
 import com.implementing.pscomposediary.helper.CustomShape.Shapes.Triangle
 import com.implementing.pscomposediary.helper.random
 
@@ -24,20 +27,29 @@ class ConfettiAnimationVM(
     var confettiNumber: Int = 20,
     var confettiTypes: List<ConfettiTypes> = listOf(
         ConfettiTypes.Shape(SHAPES.TRIANGLE),
-        ConfettiTypes.Shape(SHAPES.CIRCLE),
+//        ConfettiTypes.Shape(SHAPES.CIRCLE),
+        ConfettiTypes.Shape(SHAPES.RECTANGLE),
+        ConfettiTypes.Shape(SHAPES.RECTANGLE),
         ConfettiTypes.Shape(SHAPES.RECTANGLE),
         ConfettiTypes.Shape(SHAPES.PARALLELOGRAM),
+        ConfettiTypes.Shape(SHAPES.SQUARE),
+        ConfettiTypes.Shape(SHAPES.HEART),
+        ConfettiTypes.Shape(SHAPES.PENTAGON),
         ),
     var colors: List<Color> = listOf(
-        Color.random(),
-        Color.random(),
-        Color.random(),
-        Color.random(),
-        Color.random(),
-        Color.random()
+//        Color.Red,
+        Color(0xFFB39847),
+        Color(0xFFF5F523),
+        Color(0xFFDDA704),
+        Color(0xFFDDA704),
+        Color(0xFFDDA704),
+        Color(0xFFD6C3A6),
+        Color(0xFFB6983D),
+        Color(0xFFDB9221),
+//       Color.random()
     ),
-    var confettiSize: Float = 13.0f,
-    var dropHeight: Float = 600.0f,
+    var confettiSize: Float = 12.0f,
+    var dropHeight: Float = 700.0f,
     var fadesOut: Boolean = true,
     var fireworkEffect: Boolean = false,
     var opacity: Double = 1.0,
@@ -64,6 +76,11 @@ enum class SHAPES(val shape: Shape){
     RECTANGLE(RectangleShape),
     CIRCLE(CircleShape),
     TRIANGLE(Triangle),
-    PARALLELOGRAM(Parallelogram)
+    PARALLELOGRAM(Parallelogram),
+
+    // New shapes...
+    HEART(Heart),
+    SQUARE(Square),
+    PENTAGON(Pentagon)
 }
 
