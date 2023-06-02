@@ -9,6 +9,7 @@ data class MeetUp(
     val meetupTitle: String,
     val meetupDescription: String,
     val meetupImage: Int,
+    val meetupDesImage: Int,
     val meetupDate: String,
     val meetupLocation: String,
     val meetupSpecial: String,

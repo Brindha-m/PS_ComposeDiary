@@ -22,12 +22,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -41,9 +44,16 @@ import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import com.implementing.pscomposediary.R
+import com.implementing.pscomposediary.confetticenter.ConfettiCenterView
+import com.implementing.pscomposediary.confetticenter.ConfettiView
 import com.implementing.pscomposediary.data.MeetUpProvider
 import com.implementing.pscomposediary.data.model.MeetUp
 import com.implementing.pscomposediary.ui.theme.PSDiaryTheme
+import nl.dionsegijn.konfetti.compose.KonfettiView
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import java.util.concurrent.TimeUnit
 
 // Start of the MeetupList UI
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,9 +63,9 @@ fun MeetUpList(
 ) {
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-            .background(Color.DarkGray),
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 scrollBehavior = scrollBehavior,
@@ -68,8 +78,10 @@ fun MeetUpList(
                     }
                 },
                 title = {
-                    Text(text = "Home 🏡")
+                    Text(text = "PS Diary 🏡",
+                        color = Color.DarkGray)
                 },
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
             )
         },
     ) { paddingValues ->
@@ -83,7 +95,7 @@ private fun MeetupListBody(
     selectedMeetup: (Int) -> Unit,
     paddingValues: PaddingValues
 ) {
-    // Save the scroll state of cats list
+    // Save the scroll state of meetup list
     val scrollState = rememberLazyListState()
     val context = LocalContext.current
     val meetups: List<MeetUp> = MeetUpProvider.getMeetupList(context)
@@ -135,7 +147,6 @@ private fun MeetUpRow(
                 .padding(24.dp),
             verticalArrangement = Arrangement.Center
         ) {
-
             AnimatedVisibility(
                 visible = true
             ) {
@@ -157,6 +168,8 @@ private fun MeetUpRow(
                         .size(290.dp)
                         .clip(CircleShape),
                 )
+                ConfettiCenterView()
+
             }
 
             Spacer(Modifier.height(24.dp))

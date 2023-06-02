@@ -70,6 +70,7 @@ import com.implementing.pscomposediary.R
 import com.implementing.pscomposediary.data.MeetUpProvider
 import com.implementing.pscomposediary.data.model.MeetUp
 import com.implementing.pscomposediary.ui.theme.PSDiaryTheme
+import com.implementing.pscomposediary.ui.theme.grey700
 
 
 // Start of the Detail screen for each cat.
@@ -163,7 +164,7 @@ private fun MeetupHeader(
 
                 Image(
 //                painter = painterResource(R.drawable.tangled),
-                    painter = rememberAsyncImagePainter(meetup.meetupImage, imageLoader),
+                    painter = rememberAsyncImagePainter(meetup.meetupDesImage, imageLoader),
 //                    bitmap = ImageBitmap.imageResource(meetup.meetupImage),
                     contentDescription = "null", // decorative
                     contentScale = ContentScale.Crop,
@@ -177,7 +178,7 @@ private fun MeetupHeader(
                     Text(
                         text = meetup.meetupTitle,
                         style = MaterialTheme.typography.titleMedium,
-                        maxLines = 2,
+                        maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
 
@@ -185,9 +186,7 @@ private fun MeetupHeader(
 
                     HeaderInfoDivider()
 
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    FlowRow(modifier = Modifier.padding(10.dp))
+                    FlowRow(modifier = Modifier.padding(11.dp))
                     {
 
                         Text(
@@ -197,7 +196,7 @@ private fun MeetupHeader(
                         )
 
                         var checked by rememberSaveable { mutableStateOf(false) }
-                        Spacer(modifier = Modifier.width(250.dp))
+                        Spacer(modifier = Modifier.width(255.dp))
                         IconToggleButton(checked = checked, onCheckedChange = { checked = it }) {
                             val tint by animateColorAsState(
                                 if (checked) Color(0xFFEC407A) else Color(0xFFB0BEC5),
@@ -242,7 +241,7 @@ private fun MeetupHeader(
             )
         }
     }
-    Column (modifier = Modifier.padding(15.dp, end = 5.dp, top = 15.dp)){
+    Column (modifier = Modifier.padding(15.dp, end = 5.dp, top = 10.dp)){
         Button(onClick = {},
             colors = ButtonDefaults.buttonColors(Color(0xFFEE1C70)))
         {
@@ -256,14 +255,25 @@ private fun MeetupHeader(
 
     }
 
-    Row(modifier = Modifier.padding(18.dp)){
-        meetup.meetupHighlight.take(3).forEach { highlight ->
+    Row(modifier = Modifier.padding(13.dp)){
+        meetup.meetupHighlight.take(4).forEach { highlight ->
+            val imageHighLoader = ImageLoader.Builder(LocalContext.current)
+                .components {
+                    if (SDK_INT >= 28) {
+                        add(ImageDecoderDecoder.Factory())
+                    } else {
+                        add(GifDecoder.Factory())
+                    }
+                }
+                .build()
+
             Image(
-                painter = painterResource(highlight),
+//                painter = painterResource(highlight),
+                painter = rememberAsyncImagePainter(highlight, imageHighLoader),
                 contentDescription = stringResource(R.string.description),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(88.dp)
                     .clip(CircleShape)
                     .align(Alignment.CenterVertically)
             )
@@ -282,7 +292,7 @@ private fun MeetupHeader(
                 {
                     Text(
                         text = tags,
-                        style = MaterialTheme.typography.displayMedium,
+                        style = MaterialTheme.typography.displayMedium.copy(color = grey700),
 
                     )
                 }
@@ -299,7 +309,7 @@ private fun MeetupHeader(
                 {
                     Text(
                         text = tags,
-                        style = MaterialTheme.typography.displayMedium,
+                        style = MaterialTheme.typography.displayMedium.copy(color = grey700),
                     )
                 }
                 Spacer(modifier = Modifier.width(11.dp))
@@ -312,7 +322,7 @@ private fun MeetupHeader(
 @Composable
 private fun HeaderInfoDivider() {
     Divider(
-        color = MaterialTheme.colorScheme.secondary,
+        color = MaterialTheme.colorScheme.primary,
         thickness = 1.dp,
         modifier = Modifier.padding(horizontal = 8.dp)
     )
