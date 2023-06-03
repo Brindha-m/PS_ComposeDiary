@@ -35,7 +35,7 @@ Utilizing the jetpack compose with lazycolumns &amp; lazyrows.
 ```
    1. Room Database
    
-   2. Efficient retrieval of images fast - firebase ? want to work even in offline
+   2. Efficient and fast retrieval of images - firebase ? want to work even in offline
    
    3. Login auths
    
