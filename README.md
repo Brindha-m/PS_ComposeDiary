@@ -1,6 +1,6 @@
 # ComposeDiary
 
-<img width="302" alt="Screenshot_20230603_122540-removebg-preview" src="https://github.com/Brindha-m/PS_ComposeDiary/assets/72887609/5df62eb1-0ecf-456a-8f40-2e7242aab807">
+<!-- <img width="302" alt="Screenshot_20230603_122540-removebg-preview" src="https://github.com/Brindha-m/PS_ComposeDiary/assets/72887609/5df62eb1-0ecf-456a-8f40-2e7242aab807"> -->
 
 Utilizing the jetpack compose with lazycolumns &amp; lazyrows.
 
