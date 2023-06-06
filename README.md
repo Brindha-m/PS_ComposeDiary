@@ -42,4 +42,48 @@ Utilizing the jetpack compose with lazycolumns &amp; lazyrows.
 ```
 
 
+## Firebase
+```
+    var meetups by remember { mutableStateOf(emptyList<MeetUp>()) }
+
+    // Connect to Firebase and retrieve meetups
+    // Fetch meetups from Firebase Firestore
+    LaunchedEffect(Unit) {
+        retrieveMeetupsFromFirebase(context) { meetupsList ->
+            meetups = meetupsList
+        }
+    }
+    
+    // "Here MeetUp IS MY DATA CLASS"
+```
+
+
+For retrieval from firebase-firestore
+
+```
+
+private fun retrieveMeetupsFromFirebase(
+    context: Context,
+    onMeetupsLoaded: (List<MeetUp>) -> Unit
+){
+    val db = FirebaseFirestore.getInstance()
+    val meetupsCollection = db.collection("meetupProvider") // Replace with your Firestore collection name
+
+    meetupsCollection.get()
+        .addOnSuccessListener { result ->
+            val meetupsList = mutableListOf<MeetUp>()
+
+            for (document in result) {
+                val meetup = document.toObject(MeetUp::class.java)
+                meetupsList.add(meetup)
+            }
+            onMeetupsLoaded(meetupsList)
+        }
+        .addOnFailureListener { exception ->
+            exception.printStackTrace()
+        }
+
+}
+    
+```
 <img width="400" alt="Screenshot_20230603_122540-removebg-preview" src="https://github.com/Brindha-m/PS_ComposeDiary/assets/72887609/23f96272-5297-4d33-bd4e-8bc5a0624186">
