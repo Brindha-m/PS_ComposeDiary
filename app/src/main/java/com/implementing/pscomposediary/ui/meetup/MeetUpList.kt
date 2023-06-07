@@ -1,5 +1,6 @@
 package com.implementing.pscomposediary.ui.meetup
 
+import android.content.Context
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -37,9 +38,11 @@ import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.implementing.pscomposediary.R
 import com.implementing.pscomposediary.confetticenter.ConfettiCenterView
-import com.implementing.pscomposediary.data.MeetUpProvider
+//import com.implementing.pscomposediary.data.MeetUpProvider
 import com.implementing.pscomposediary.data.model.MeetUp
 import com.implementing.pscomposediary.ui.theme.PSDiaryTheme
 
@@ -89,7 +92,17 @@ private fun MeetupListBody(
     // Save the scroll state of meetup list
     val scrollState = rememberLazyListState()
     val context = LocalContext.current
-    val meetups: List<MeetUp> = MeetUpProvider.getMeetupList(context)
+//    val meetups: List<MeetUp> = MeetUpProvider.getMeetupList(context)
+
+    var meetups by remember { mutableStateOf(emptyList<MeetUp>()) }
+
+    // Connect to Firebase and retrieve meetups
+    // Fetch meetups from Firebase Firestore
+    LaunchedEffect(Unit) {
+        retrieveMeetupsFromFirebase(context) { meetupsList ->
+            meetups = meetupsList
+        }
+    }
 
     LazyColumn(
         modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
@@ -114,6 +127,29 @@ private fun MeetupListBody(
             MeetUpRow(meetup, selectedMeetup)
         }
     }
+}
+
+private fun retrieveMeetupsFromFirebase(
+    context: Context,
+    onMeetupsLoaded: (List<MeetUp>) -> Unit
+){
+    val db = FirebaseFirestore.getInstance()
+    val meetupsCollection = db.collection("meetupProvider") // Replace with your Firestore collection name
+
+    meetupsCollection.get()
+        .addOnSuccessListener { result ->
+            val meetupsList = mutableListOf<MeetUp>()
+
+            for (document in result) {
+                val meetup = document.toObject(MeetUp::class.java)
+                meetupsList.add(meetup)
+            }
+            onMeetupsLoaded(meetupsList)
+        }
+        .addOnFailureListener { exception ->
+            exception.printStackTrace()
+        }
+
 }
 
 // Item row for one meetup.
