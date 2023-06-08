@@ -16,7 +16,6 @@ dependencyResolutionManagement {
     }
 }
 
-
 rootProject.name = "PS Diary"
 include(":app")
  

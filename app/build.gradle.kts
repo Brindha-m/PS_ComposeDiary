@@ -61,6 +61,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("com.google.firebase:firebase-common-ktx:20.3.2")
+    implementation("androidx.datastore:datastore-core:1.0.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -69,14 +70,14 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    
+    //  Nav - Manage list page and the detail page
     implementation ("androidx.navigation:navigation-compose:2.5.1")
     implementation ("com.google.accompanist:accompanist-pager:0.24.13-rc")
-
+    // Gif Acceptance imports - GifDecoder and party burst effects
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("io.coil-kt:coil-gif:2.2.2")
     implementation("nl.dionsegijn:konfetti-compose:2.0.2")
-
+    // For Firebase Connection
     implementation("com.google.firebase:firebase-firestore:24.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("com.google.gms:google-services:4.3.15")
