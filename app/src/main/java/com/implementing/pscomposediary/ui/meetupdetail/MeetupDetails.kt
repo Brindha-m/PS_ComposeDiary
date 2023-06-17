@@ -1,14 +1,16 @@
 package com.implementing.pscomposediary.ui.meetupdetail
 
+//import com.implementing.pscomposediary.data.MeetUpProvider
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Build.VERSION.SDK_INT
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -42,10 +44,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,8 +69,11 @@ import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.google.firebase.firestore.FirebaseFirestore
 import com.implementing.pscomposediary.R
-import com.implementing.pscomposediary.data.MeetUpProvider
 import com.implementing.pscomposediary.data.model.MeetUp
 import com.implementing.pscomposediary.ui.theme.PSDiaryTheme
 import com.implementing.pscomposediary.ui.theme.grey700
@@ -82,22 +87,72 @@ fun MeetupDetails(
 ) {
     val context = LocalContext.current
 
-    val meetup: MeetUp = remember(meetupId) {
-        MeetUpProvider.getMeetup(
-            meetupId, context
-        )
+//    val meetup: MeetUp = remember(meetupId) {
+////        MeetUpProvider.getMeetup(
+////            meetupId, context
+////        )
+//    }
+    var meetup by remember { mutableStateOf<MeetUp?>(null) }
+
+    // Connect to Firebase and retrieve meetups
+    // Fetch meetups from Firebase Firestore
+
+    // Connect to Firebase and retrieve meetup
+    LaunchedEffect(Unit) {
+        retrieveMeetupFromFirebase(context, meetupId) { loadedMeetup ->
+            meetup = loadedMeetup
+        }
     }
 
-    AnimatedVisibility(
-        visible = true,
-        enter = expandVertically(
-            expandFrom = Alignment.Top,
-            initialHeight = { 0 }
-        )
-    ) {
-        SetMeetupDetails(meetup, navigateUp)
-    }
+    if (meetup != null) {
+        // not-null assertion operator
+            SetMeetupDetails(meetup!!, navigateUp)
+        }
+
+//    meetup?.let { SetMeetupDetails(it, navigateUp) }
+
+
+//    AnimatedVisibility(
+//        visible = true,
+//        enter = expandVertically(
+//            expandFrom = Alignment.Top,
+//            initialHeight = { 0 }
+//        )
+//    ) {
+//        if (meetup != null) {
+//        // not-null assertion operator
+//            SetMeetupDetails(meetup!!, navigateUp)
+//        }
+//        // Handle case when meetup is null (loading or not found)
+//        else {
+//            // Show loading or error message
+//        }
+//    }
 }
+// Details Page retrieval from firestore
+fun retrieveMeetupFromFirebase(
+    context: Context,
+    meetupId: Int,
+    onMeetupLoaded: (MeetUp?) -> Unit
+) {
+    val db = FirebaseFirestore.getInstance()
+    val meetupsCollection = db.collection("meetupProvider") // Replace with your Firestore collection name
+
+    meetupsCollection.document(meetupId.toString()).get()
+        .addOnSuccessListener { document ->
+            if (document.exists()) {
+                val meetup = document.toObject(MeetUp::class.java)
+                onMeetupLoaded(meetup)
+            } else {
+                onMeetupLoaded(null)
+            }
+        }
+        .addOnFailureListener { exception ->
+            exception.printStackTrace()
+            onMeetupLoaded(null)
+        }
+}
+
 
 // This UI starts with AnimatedVisibility
 @Composable
@@ -107,18 +162,37 @@ private fun SetMeetupDetails(
 ) {
     Surface {
         Column(
+//            Change change background color here
             modifier = Modifier
                 .fillMaxSize()
-//                .background(Color.Black)
+//                .background(Color(0xFFF7F2E5))
         ) {
-            LazyColumn {
-                item { MeetupHeader(meetup, navigateUp) }
+            BoxWithConstraints(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                val backgroundImage = painterResource(R.drawable.bg)
+                Image(
+                    painter = backgroundImage,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.FillBounds
+                )
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    LazyColumn {
+                        item { MeetupHeader(meetup, navigateUp) }
+                    }
+                }
+
             }
         }
     }
 }
 
-// Show up button, banner of the cat, custom app bar.
+// Show up button, banner of the meetup, custom app bar.
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 private fun MeetupHeader(
@@ -139,7 +213,6 @@ private fun MeetupHeader(
         colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
 
     )
-
     Box (modifier = Modifier.padding(10.dp)){
         Card(
             //shape = MaterialTheme.shapes.medium,
@@ -198,20 +271,9 @@ private fun MeetupHeader(
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.displayMedium,
                         )
+                        LottiePlayOnce()
+//                        HeartState()
 
-                        var checked by rememberSaveable { mutableStateOf(false) }
-                        Spacer(modifier = Modifier.width(255.dp))
-                        IconToggleButton(checked = checked, onCheckedChange = { checked = it }) {
-                            val tint by animateColorAsState(
-                                if (checked) Color(0xFFEC407A) else Color(0xFFB0BEC5),
-                                label = "Click Here"
-                            )
-                            Icon(
-                                Icons.Filled.Favorite,
-                                contentDescription = "Localized description",
-                                tint = tint,
-                            )
-                        }
                     }
                 }
             }
@@ -220,13 +282,15 @@ private fun MeetupHeader(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(25.dp, top= 5.dp, 25.dp, bottom = 10.dp),
+            .padding(25.dp, top = 5.dp, 25.dp, bottom = 10.dp),
         colors = CardDefaults.cardColors(
             containerColor =  Color(0xffF4EAEE),
         ),
     ) {
         Column (
-            modifier = Modifier.padding(13.dp).align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .padding(13.dp)
+                .align(Alignment.CenterHorizontally),
         ) {
             Text(
                 buildAnnotatedString {
@@ -321,6 +385,37 @@ private fun MeetupHeader(
         }
     }
 }
+@Composable
+fun HeartState() {
+    var checked by remember { mutableStateOf(false) }
+    Spacer(modifier = Modifier.width(255.dp))
+    IconToggleButton(
+        checked = checked,
+        onCheckedChange = { checked = it }) {
+        val tint by animateColorAsState(
+            if (checked) Color(0xFFEC407A) else Color(0xFFB0BEC5),
+            label = "Click Here"
+        )
+        Icon(
+            Icons.Filled.Favorite,
+            contentDescription = "Localized description",
+            tint = tint,
+        )
+    }
+}
+
+@Composable
+private fun LottiePlayOnce() {
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.heart_like))
+    Spacer(modifier = Modifier.width(255.dp))
+    LottieAnimation(
+        composition = composition,
+        modifier = Modifier.size(56.dp),
+//        iterations = LottieConstants.IterateForever
+    )
+}
+
+
 
 // Horizontal divider
 @Composable

@@ -72,8 +72,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     //  Nav - Manage list page and the detail page
     implementation ("androidx.navigation:navigation-compose:2.5.1")
-    implementation ("com.google.accompanist:accompanist-pager:0.24.13-rc")
+    implementation ("com.google.accompanist:accompanist-pager:0.31.3-beta")
     // Gif Acceptance imports - GifDecoder and party burst effects
+    //    Coil is to load the images
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("io.coil-kt:coil-gif:2.2.2")
     implementation("nl.dionsegijn:konfetti-compose:2.0.2")
@@ -81,6 +82,12 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("com.google.gms:google-services:4.3.15")
+
+//    Splash
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+//    Lottie Animation (heart)
+    implementation("com.airbnb.android:lottie-compose:6.0.1")
 }
 
 
