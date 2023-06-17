@@ -385,6 +385,8 @@ private fun MeetupHeader(
         }
     }
 }
+
+// Onclick Heart Animation
 @Composable
 fun HeartState() {
     var checked by remember { mutableStateOf(false) }
@@ -404,6 +406,7 @@ fun HeartState() {
     }
 }
 
+// Lottie Heart Animation
 @Composable
 private fun LottiePlayOnce() {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.heart_like))
