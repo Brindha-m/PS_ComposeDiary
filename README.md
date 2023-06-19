@@ -2,44 +2,29 @@
 
 <!-- <img width="302" alt="Screenshot_20230603_122540-removebg-preview" src="https://github.com/Brindha-m/PS_ComposeDiary/assets/72887609/5df62eb1-0ecf-456a-8f40-2e7242aab807"> -->
 
-Utilizing the jetpack compose with lazycolumns &amp; lazyrows.
 
-## Learned
+## Learned 💭
 
-```
-    
-    1. Jetpack Compose - Without XML creating UI With Kotlin, Made Dynamic Data providers.
-    
-    2. @Composable
-    
-    3. Surface(), Column(), Modifiers, Padding, Align
-    
-    4. Instead of Recycler view - LazyRows and LazyColumns
-    
-    5. AppNavigation - Sealed Class, Onclick Activities
-    
-    6. FlowRows(), FlowColumns(),
-    
-    7. Confetti Party popper effect
-    
-    8. Scaffold - TopAppBar
-    
-    9. Material3 - Buttons, Text, Icon, Images etc..
-    
-    10. theme - Type(For custom Fonts), Theme(For BG Colors and inapp content color theme), Shapes & Colors.
-    
-```
+| Component | Description |
+|-----------|-------------|
+| **Jetpack Compose** | Modern UI toolkit for building native Android apps, without XML creating UI With Kotlin. |
+| **Coil** | An image loading library with caching capabilities for Android that is compatible with Jetpack Compose. |
+| **Confetti Party Popper Effect** | 🎉🎉 |
+| **Firestore** | Firestore is a NoSQL document database provided by Firebase. Store and retrieve data for your app. |
+| **LazyRows and LazyColumns** | Replacement for RecyclerView and offer improved performance and simpler implementation for displaying large datasets |
+| **Lottie Animation** | Animation library that allows you to render and play back After Effects animations natively in your Android app.|
+| **Material 3** | Latest version of the Material Design, it offers a fresh and modern approach to UI design in Android apps.|
+| **Navigation-Compose** | To handle navigation within your app, including features like navigation graphs, destinations, arguments passing, and deep linking. |
+| **Scaffold** | Common UI elements such as AppBar and FloatingActionButton etc.. |
+| **TopAppBars** | Commonly used for titles, menus, and action buttons in your app's UI. |
 
-## TODOS
+### UI/theme default Components in Compose
 
-```
-   1. Room Database
-   
-   2. Efficient and fast retrieval of images - firebase ? want to work even in offline
-   
-   3. Login auths
-   
-```
+| **File** | **Context** |
+|-----------|-------------|
+| **Type.kt** | For custom Fonts settings |
+| **Theme.kt** | For BG Colors and inapp content color theme |
+| **Color.kt** | colorScheme for the Navigation bar and System Bar Colors |
 
 
 ## Firebase
@@ -47,7 +32,7 @@ Utilizing the jetpack compose with lazycolumns &amp; lazyrows.
     var meetups by remember { mutableStateOf(emptyList<MeetUp>()) }
 
     // Connect to Firebase and retrieve meetups
-    // Fetch meetups from Firebase Firestore
+    // Fetch meetups from Firebase Firestor
     LaunchedEffect(Unit) {
         retrieveMeetupsFromFirebase(context) { meetupsList ->
             meetups = meetupsList
