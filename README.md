@@ -8,11 +8,11 @@
 | Component | Description |
 |-----------|-------------|
 | **Jetpack Compose** | Modern UI toolkit for building native Android apps, without XML creating UI With Kotlin. |
-| **Coil** | An image loading library with caching capabilities for Android that is compatible with Jetpack Compose. |
+| **Coil** | An image loading library with caching capabilities. |
 | **Confetti Party Popper Effect** | 🎉🎉 |
-| **Firestore** | Firestore is a NoSQL document database provided by Firebase. Store and retrieve data for your app. |
-| **LazyRows and LazyColumns** | Replacement for RecyclerView and offer improved performance and simpler implementation for displaying large datasets |
-| **Lottie Animation** | Animation library that allows you to render and play back After Effects animations natively in your Android app.|
+| **Firestore** |  NoSQL document database provided by Firebase. Store and retrieve data for your app. |
+| **LazyRows and LazyColumns** | Replacement for RecyclerViews. |
+| **Lottie Animation** | Animation library that allows you to render and play back After Effects animations |
 | **Material 3** | Latest version of the Material Design, it offers a fresh and modern approach to UI design in Android apps.|
 | **Navigation-Compose** | To handle navigation within your app, including features like navigation graphs, destinations, arguments passing, and deep linking. |
 | **Scaffold** | Common UI elements such as AppBar and FloatingActionButton etc.. |
