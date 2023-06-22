@@ -26,6 +26,24 @@
 | **Theme.kt** | For BG Colors and inapp content color theme |
 | **Color.kt** | colorScheme for the Navigation bar and System Bar Colors |
 
+### Clean Architecture
+
+MVVM ( Model ViewModel View)
+     
+      ╔══════════════════════╗                ╔══════════════════════╗                   ╔══════════════════════╗    
+      ║     ** VIEW **       ║                ║   ** VIEW MODEL **   ║                   ║     ** MODEL **      ║     
+      ║    --------------    ║ ------------→  ║     --------------   ║  ------------→    ║    --------------    ║    
+      ║     UI Components    ║                ║        Survive       ║                   ║      Repositories    ║     
+      ║  Activity/ Fragments ║                ║     Config Change    ║                   ║ (Data classes, APIs) ║   
+      ╚══════════════════════╝                ╚══════════════════════╝                   ╚══════════════════════╝   
+                                                   Business Logic                                 Repositories
+                                                    ⭕ State                                     /            \
+                                                    ⭕ Live Data                            Remote           Local  
+                                                                                          Data Source       Data Source
+                                                                                        
+                                                                                        ✔️ Retrofit          ➡️ Room ( Large and complex datasets)
+                                                                                                              ➡️ DataStore ( Small or Simple datasets)
+                                                                                                            
 
 ## Firebase
 ```
