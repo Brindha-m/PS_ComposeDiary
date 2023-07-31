@@ -15,7 +15,7 @@
 | **Lottie Animation** | Animation library that allows you to render and play back After Effects animations |
 | **Material 3** | Latest version of the Material Design, it offers a fresh and modern approach to UI design in Android apps.|
 | **Navigation-Compose** | To handle navigation within your app, including features like navigation graphs, destinations, arguments passing, and deep linking. |
-| **Scaffold** | Common UI elements such as AppBar and FloatingActionButton etc.. |
+| **Scaffold** | Common UI elements such as AppBar - TopAppBar, BottomAppBar and FloatingActionButton etc.. |
 | **TopAppBars** | Commonly used for titles, menus, and action buttons in your app's UI. |
 
 ### UI/theme default Components in Compose
